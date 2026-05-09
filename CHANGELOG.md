@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-05-09
+
+### Security
+- Replaced loose `<meta http-equiv="Content-Security-Policy">` with strict server-side Caddy header
+- Dropped `'unsafe-inline'` from `script-src` and `style-src`
+- Added `require-trusted-types-for 'script'` and `trusted-types brew-template 'allow-duplicates'`
+- Added `frame-ancestors 'none'` and `manifest-src 'self'`
+- Constrained `img-src` to `'self' data: https://images.unsplash.com` (no wildcard `https:`)
+- Removed `<meta http-equiv="Content-Security-Policy">` from `index.html` — server header is now authoritative
+
 ## [0.5.0] - 2026-05-09
 
 ### Added
