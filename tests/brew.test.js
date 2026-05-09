@@ -79,3 +79,54 @@ describe('external CSS and JS assets (task #436)', () => {
     expect(html).toContain('type="application/ld+json"');
   });
 });
+
+describe('strict CSP + Trusted Types (task #437)', () => {
+  it('index.html has NO <meta http-equiv="Content-Security-Policy"> — server-side header is authoritative', () => {
+    const html = readFileSync(join(root, 'index.html'), 'utf8');
+    expect(html).not.toContain('http-equiv="Content-Security-Policy"');
+    expect(html).not.toContain("http-equiv='Content-Security-Policy'");
+  });
+
+  it('Caddyfile CSP does NOT contain unsafe-inline', () => {
+    const caddyfile = readFileSync(join(root, 'Caddyfile'), 'utf8');
+    expect(caddyfile).not.toContain("'unsafe-inline'");
+  });
+
+  it('Caddyfile CSP does NOT contain unsafe-eval', () => {
+    const caddyfile = readFileSync(join(root, 'Caddyfile'), 'utf8');
+    expect(caddyfile).not.toContain("'unsafe-eval'");
+  });
+
+  it('Caddyfile CSP does NOT contain wildcard https: src', () => {
+    const caddyfile = readFileSync(join(root, 'Caddyfile'), 'utf8');
+    // Allow specific https:// domains but not bare "https:" wildcard
+    const cspLine = caddyfile.split('\n').find(l => l.includes('Content-Security-Policy'));
+    expect(cspLine).toBeTruthy();
+    // "https:" as a standalone token (not part of a URL) is a wildcard — reject it
+    expect(cspLine).not.toMatch(/\bhttps:\s/);
+    expect(cspLine).not.toMatch(/\bhttps:"/);
+  });
+
+  it('Caddyfile CSP includes require-trusted-types-for', () => {
+    const caddyfile = readFileSync(join(root, 'Caddyfile'), 'utf8');
+    expect(caddyfile).toContain("require-trusted-types-for 'script'");
+  });
+
+  it('Caddyfile CSP includes trusted-types brew-template', () => {
+    const caddyfile = readFileSync(join(root, 'Caddyfile'), 'utf8');
+    expect(caddyfile).toContain('trusted-types brew-template');
+  });
+
+  it('js/app.js has no bare innerHTML assignments (all DOM-safe)', () => {
+    const js = readFileSync(join(root, 'js', 'app.js'), 'utf8');
+    // innerHTML assignments are only allowed if wrapped with safeHTML() or trustedTypes
+    const innerHTMLAssignments = [...js.matchAll(/\.innerHTML\s*=/g)];
+    // If any exist, they must all be preceded by safeHTML( on the same line
+    for (const match of innerHTMLAssignments) {
+      const lineStart = js.lastIndexOf('\n', match.index) + 1;
+      const lineEnd = js.indexOf('\n', match.index);
+      const line = js.slice(lineStart, lineEnd === -1 ? undefined : lineEnd);
+      expect(line).toMatch(/safeHTML\s*\(|trustedTypes/);
+    }
+  });
+});
