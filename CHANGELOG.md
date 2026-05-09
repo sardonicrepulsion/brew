@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-05-09
+
+### Added
+- `manifest.webmanifest` — PWA web app manifest with brand identity (`theme_color: #e4b36c`, `background_color: #100d0a`, `display: standalone`, Slovak locale)
+- `favicon.svg` — standalone SVG icon file (extracted from inline data URI); referenced by manifest, `<link rel="icon">` and `<link rel="apple-touch-icon">`
+- Caddyfile `@manifest` matcher: serves `*.webmanifest` with `Content-Type: application/manifest+json; charset=utf-8`
+
+### Changed
+- `index.html`: replaced inline data-URI `<link rel="icon">` and `<link rel="apple-touch-icon">` with file-based `/favicon.svg` references; added `<link rel="manifest" href="/manifest.webmanifest">`
+- A11y: `<a class="skip-link">` and `<main id="main">` verified present (were already in template from v0.2.0 extraction)
+- Bumped version to 0.7.0 across all version files
+
 ## [0.6.0] - 2026-05-09
 
 ### Security

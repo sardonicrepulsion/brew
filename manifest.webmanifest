@@ -1,0 +1,14 @@
+{
+  "name": "Break & Brew",
+  "short_name": "Brew",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#100d0a",
+  "theme_color": "#e4b36c",
+  "lang": "sk",
+  "description": "Útulná kaviareň v centre Banskej Bystrice — výberová káva, biliard a craft beer.",
+  "icons": [
+    {"src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable"}
+  ]
+}

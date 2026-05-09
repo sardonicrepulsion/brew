@@ -130,3 +130,40 @@ describe('strict CSP + Trusted Types (task #437)', () => {
     }
   });
 });
+
+describe('PWA manifest (task #441)', () => {
+  it('manifest.webmanifest exists', () => {
+    expect(existsSync(join(root, 'manifest.webmanifest'))).toBe(true);
+  });
+
+  it('manifest.webmanifest is valid JSON with required fields', () => {
+    const raw = readFileSync(join(root, 'manifest.webmanifest'), 'utf8');
+    const m = JSON.parse(raw);
+    expect(m.name).toBeTruthy();
+    expect(m.theme_color).toBeTruthy();
+    expect(m.start_url).toBeTruthy();
+    expect(m.display).toBeTruthy();
+    expect(Array.isArray(m.icons)).toBe(true);
+    expect(m.icons.length).toBeGreaterThan(0);
+  });
+
+  it('index.html links to manifest', () => {
+    const html = readFileSync(join(root, 'index.html'), 'utf8');
+    expect(html).toContain('rel="manifest"');
+  });
+
+  it('index.html has theme-color meta', () => {
+    const html = readFileSync(join(root, 'index.html'), 'utf8');
+    expect(html).toContain('name="theme-color"');
+  });
+
+  it('index.html has skip-link', () => {
+    const html = readFileSync(join(root, 'index.html'), 'utf8');
+    expect(html).toContain('class="skip-link"');
+  });
+
+  it('index.html has <main id="main">', () => {
+    const html = readFileSync(join(root, 'index.html'), 'utf8');
+    expect(html).toContain('<main id="main">');
+  });
+});
