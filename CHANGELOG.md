@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-05-09
+
+### Added
+- Host-layer security headers via `dokku caddy:labels:add`:
+  - `Strict-Transport-Security: max-age=63072000; includeSubDomains; preload` (HSTS preload-grade)
+  - `Cross-Origin-Opener-Policy: same-origin` (COOP)
+  - `Cross-Origin-Resource-Policy: same-origin` (CORP)
+- Comment in Caddyfile documenting that HSTS/COOP/CORP are intentionally emitted at host proxy layer to avoid header doubling
+
+### Notes
+- HSTS label requires inner double quotes around the value (`'"max-age=...; preload"'`) so Caddyfile parser treats `;` as part of the string rather than a token separator
+
 ## [0.1.0] - 2026-05-09
 
 ### Added
