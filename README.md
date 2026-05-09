@@ -35,6 +35,20 @@ git clone https://github.com/sardonicrepulsion/brew.git
 | `/healthz` | Healthcheck (JSON) |
 | `/version` | Verzia aplikácie (JSON) |
 
+## Security Headers
+
+App-layer headers (X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy) are set in `Caddyfile`.
+
+Host-proxy-layer headers are set via Dokku caddy labels (to avoid doubling with the inner Caddy instance):
+
+| Label | Value |
+|-------|-------|
+| `caddy.header.Strict-Transport-Security` | `"max-age=63072000; includeSubDomains; preload"` |
+| `caddy.header.Cross-Origin-Opener-Policy` | `same-origin` |
+| `caddy.header.Cross-Origin-Resource-Policy` | `same-origin` |
+
+> **Note:** The HSTS label value must be wrapped in inner double quotes (outer single + inner double: `'"max-age=...; preload"'`) — without them, the `;` is parsed as a Caddyfile token separator and the header value is broken.
+
 ## Environment Variables
 
 Žiadne — čisto statický site.

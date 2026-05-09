@@ -7,19 +7,21 @@
         Permissions-Policy "camera=(), microphone=(), geolocation=(), interest-cohort=(), accelerometer=(), autoplay=(), encrypted-media=(), gyroscope=(), magnetometer=(), midi=(), payment=(), usb=(), sync-xhr=()"
         X-Permitted-Cross-Domain-Policies "none"
         # CSP NOT set here yet — template's <meta http-equiv> handles initial. Strict CSP via task #437.
+        # Note: Strict-Transport-Security, Cross-Origin-Opener-Policy, Cross-Origin-Resource-Policy
+        # are emitted by the HOST Caddy proxy layer via dokku caddy:labels:add to avoid doubling.
         -Server
     }
     handle /health {
         header Content-Type application/json
-        respond "{\"status\":\"ok\",\"version\":\"0.1.0\"}" 200
+        respond "{\"status\":\"ok\",\"version\":\"0.4.0\"}" 200
     }
     handle /healthz {
         header Content-Type application/json
-        respond "{\"status\":\"ok\",\"version\":\"0.1.0\"}" 200
+        respond "{\"status\":\"ok\",\"version\":\"0.4.0\"}" 200
     }
     handle /version {
         header Content-Type application/json
-        respond `{"app":"brew","version":"0.1.0","classification":"marketing/public/active"}` 200
+        respond `{"app":"brew","version":"0.4.0","classification":"marketing/public/active"}` 200
     }
     @static path_regexp static \.((jpg|jpeg|png|gif|svg|ico|css|js|woff2?|ttf|webmanifest))$
     header @static Cache-Control "public, immutable"
