@@ -19,6 +19,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Notes
 - HSTS label requires inner double quotes around the value (`'"max-age=...; preload"'`) so Caddyfile parser treats `;` as part of the string rather than a token separator
 
+## [0.2.0] - 2026-05-09
+
+### Changed
+- Extracted inline `<style>` block (1958 lines) to `css/app.css` — enables strict CSP in task #437
+- Extracted inline `<script>` blocks to `js/app.js` (469 lines, concatenated in source order)
+- `index.html` reduced from 3195 to 768 lines; no functional changes to CSS or JS logic
+- Bumped version to 0.2.0 across all version files
+
+### Added
+- `css/app.css` — extracted stylesheet
+- `js/app.js` — extracted scripts (js-class-toggle + main IIFE)
+- Tests: assert external asset files exist and index.html contains no inline style/script blocks
+
 ## [0.1.0] - 2026-05-09
 
 ### Added
