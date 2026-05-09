@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-05-09
+
+### Added
+- GitHub Actions CI workflow on self-hosted ARM64 runner (`sardonic-arm64-brew`)
+- `static-tests` job: `npm ci && npm test` (vitest) on `[self-hosted, linux, ARM64]`
+- `version-consistency` job: validates `package.json` and `version.json` versions match
+- Reusable workflow `.github/workflows/version-consistency.yml` (supports `workflow_call`)
+- Systemd unit `actions.runner.sardonicrepulsion-brew.sardonic-arm64-brew.service`
+
 ## [0.4.0] - 2026-05-09
 
 ### Added

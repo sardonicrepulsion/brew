@@ -1,0 +1,36 @@
+name: Version Consistency
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_call: {}
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: [self-hosted, linux, ARM64]
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check package.json / version.json agree
+        run: |
+          if [ ! -f package.json ] || [ ! -f version.json ]; then
+            echo "Skip: one of package.json / version.json missing."
+            exit 0
+          fi
+          PKG_VER=$(node -e "process.stdout.write(require('./package.json').version || '')")
+          VER_VER=$(node -e "process.stdout.write(require('./version.json').version || '')")
+          echo "package.json = $PKG_VER"
+          echo "version.json = $VER_VER"
+          if [ -z "$PKG_VER" ] || [ -z "$VER_VER" ]; then
+            echo "::error::Missing version field in one of the files."
+            exit 1
+          fi
+          if [ "$PKG_VER" != "$VER_VER" ]; then
+            echo "::error::version mismatch: package.json=$PKG_VER, version.json=$VER_VER. Bump both together."
+            exit 1
+          fi
+          echo "✓ versions match ($PKG_VER)"
