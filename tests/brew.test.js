@@ -167,3 +167,50 @@ describe('PWA manifest (task #441)', () => {
     expect(html).toContain('<main id="main">');
   });
 });
+
+describe('beer register (task #511)', () => {
+  it('index.html has beer-register section with table, search, chips, and sort buttons', () => {
+    const html = readFileSync(join(root, 'index.html'), 'utf8');
+    expect(html).toContain('data-beer-table');
+    expect(html).toContain('data-beer-rows');
+    expect(html).toContain('data-beer-chips');
+    expect(html).toContain('data-beer-search');
+    expect(html).toContain('data-beer-empty');
+    expect(html).toContain('data-beer-clear');
+    expect(html).toMatch(/data-sort="name"/);
+    expect(html).toMatch(/data-sort="brewery"/);
+    expect(html).toMatch(/data-sort="style"/);
+    expect(html).toMatch(/data-sort="abv"/);
+    expect(html).toMatch(/data-sort="ibu"/);
+    expect(html).toMatch(/data-sort="rating"/);
+    expect(html).toMatch(/data-sort="date_tried"/);
+  });
+
+  it('js/app.js defines a beerRegister dataset with the required fields', () => {
+    const js = readFileSync(join(root, 'js', 'app.js'), 'utf8');
+    expect(js).toContain('beerRegister');
+    // Every row literal must include style/abv/ibu/rating/date_tried fields somewhere.
+    for (const field of ['style:', 'abv:', 'ibu:', 'rating:', 'date_tried:']) {
+      expect(js).toContain(field);
+    }
+  });
+
+  it('js/app.js wires search input, chip toggles, sort headers and clear button', () => {
+    const js = readFileSync(join(root, 'js', 'app.js'), 'utf8');
+    expect(js).toContain('[data-beer-search]');
+    expect(js).toContain('[data-beer-chips]');
+    expect(js).toContain('[data-beer-clear]');
+    expect(js).toMatch(/\[data-sort\]/);
+    expect(js).toMatch(/aria-pressed/);
+    expect(js).toMatch(/aria-sort/);
+  });
+
+  it('css/app.css styles the beer-register surface incl. active sort header indicator', () => {
+    const css = readFileSync(join(root, 'css', 'app.css'), 'utf8');
+    expect(css).toContain('.beer-register');
+    expect(css).toContain('.beer-register__table');
+    expect(css).toContain('.beer-register__chip');
+    expect(css).toContain('.beer-register__sort');
+    expect(css).toMatch(/aria-sort="(ascending|descending)"/);
+  });
+});

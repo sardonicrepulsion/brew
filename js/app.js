@@ -455,6 +455,131 @@ document.documentElement.classList.add('js');
         if (date) node.setAttribute('datetime', toIsoLocal(date, time));
       });
 
+      // ─── Beer register (sortable + filterable) ────────────────────────
+      const beerRegister = [
+        { name: 'Domáci ležiak 12°', brewery: 'Brew House BB', style: 'lager',  abv: 5.0, ibu: 30, rating: 8.4, date_tried: '2026-05-08' },
+        { name: 'West Coast IPA',     brewery: 'Hopfield',     style: 'ipa',    abv: 6.4, ibu: 64, rating: 9.1, date_tried: '2026-05-09' },
+        { name: 'Hazy APA',           brewery: 'Tropic Lab',   style: 'apa',    abv: 5.5, ibu: 38, rating: 8.7, date_tried: '2026-05-07' },
+        { name: 'Sour malina & limeta', brewery: 'Kvas',       style: 'sour',   abv: 4.2, ibu: 12, rating: 8.9, date_tried: '2026-05-06' },
+        { name: 'Stout s kávou',      brewery: 'Pražiareň',    style: 'stout',  abv: 7.2, ibu: 35, rating: 9.0, date_tried: '2026-05-04' },
+        { name: 'Nealko pale ale 0,0', brewery: 'Sober Hop',   style: 'pale',   abv: 0.4, ibu: 28, rating: 7.8, date_tried: '2026-05-03' },
+        { name: 'Pilsner 11° nefiltrovaný', brewery: 'Brew House BB', style: 'lager', abv: 4.5, ibu: 32, rating: 8.2, date_tried: '2026-05-02' },
+        { name: 'Double IPA Vermont', brewery: 'Hopfield',     style: 'ipa',    abv: 8.2, ibu: 75, rating: 9.3, date_tried: '2026-04-29' },
+        { name: 'Imperial Stout',     brewery: 'Pražiareň',    style: 'stout',  abv: 10.5, ibu: 60, rating: 9.5, date_tried: '2026-04-28' },
+        { name: 'Berliner Weisse jahoda', brewery: 'Kvas',     style: 'sour',   abv: 3.4, ibu: 8,  rating: 8.0, date_tried: '2026-04-25' },
+        { name: 'Wheat ale',          brewery: 'Brew House BB', style: 'wheat', abv: 4.8, ibu: 18, rating: 7.9, date_tried: '2026-04-22' },
+        { name: 'Belgian Tripel',     brewery: 'Klášter',      style: 'belgian', abv: 9.0, ibu: 25, rating: 8.8, date_tried: '2026-04-18' }
+      ];
+      const beerStyleLabels = {
+        lager: 'Ležiak', ipa: 'IPA', apa: 'APA', sour: 'Sour',
+        stout: 'Stout', pale: 'Pale ale', wheat: 'Pšeničné', belgian: 'Belgické'
+      };
+      const formatDate = (iso) => {
+        const [y, m, d] = iso.split('-');
+        return `${Number(d)}. ${Number(m)}. ${y}`;
+      };
+
+      const beerTable = $('[data-beer-table]');
+      if (beerTable) {
+        const rowsEl = $('[data-beer-rows]', beerTable);
+        const emptyEl = $('[data-beer-empty]');
+        const chipsEl = $('[data-beer-chips]');
+        const searchEl = $('[data-beer-search]');
+        const clearEl = $('[data-beer-clear]');
+
+        const styles = Array.from(new Set(beerRegister.map((b) => b.style)));
+        const activeStyles = new Set();
+        let sortKey = 'date_tried';
+        let sortDir = 'desc';
+        let query = '';
+
+        styles.forEach((s) => {
+          const chip = el('button', {
+            type: 'button',
+            class: 'beer-register__chip',
+            dataset: { beerChip: s },
+            'aria-pressed': 'false'
+          }, [beerStyleLabels[s] || s]);
+          chip.addEventListener('click', () => {
+            if (activeStyles.has(s)) { activeStyles.delete(s); chip.setAttribute('aria-pressed', 'false'); }
+            else { activeStyles.add(s); chip.setAttribute('aria-pressed', 'true'); }
+            render();
+          });
+          chipsEl.appendChild(chip);
+        });
+
+        $$('[data-sort]', beerTable).forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const key = btn.dataset.sort;
+            if (sortKey === key) {
+              sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+            } else {
+              sortKey = key;
+              sortDir = (key === 'rating' || key === 'abv' || key === 'ibu' || key === 'date_tried') ? 'desc' : 'asc';
+            }
+            render();
+          });
+        });
+
+        searchEl.addEventListener('input', () => {
+          query = searchEl.value.trim().toLowerCase();
+          render();
+        });
+
+        clearEl.addEventListener('click', () => {
+          activeStyles.clear();
+          query = '';
+          searchEl.value = '';
+          $$('[data-beer-chip]').forEach((c) => c.setAttribute('aria-pressed', 'false'));
+          render();
+        });
+
+        const compare = (a, b) => {
+          const av = a[sortKey];
+          const bv = b[sortKey];
+          if (typeof av === 'number' && typeof bv === 'number') return av - bv;
+          return String(av).localeCompare(String(bv), 'sk', { sensitivity: 'base' });
+        };
+
+        const render = () => {
+          rowsEl.replaceChildren();
+          const filtered = beerRegister
+            .filter((b) => activeStyles.size === 0 || activeStyles.has(b.style))
+            .filter((b) => {
+              if (!query) return true;
+              const hay = (b.name + ' ' + b.brewery).toLowerCase();
+              return hay.includes(query);
+            })
+            .sort((a, b) => (sortDir === 'asc' ? compare(a, b) : -compare(a, b)));
+
+          if (!filtered.length) {
+            emptyEl.hidden = false;
+          } else {
+            emptyEl.hidden = true;
+            filtered.forEach((b) => {
+              const tr = el('tr', {}, [
+                el('td', { class: 'beer-register__name' }, [b.name]),
+                el('td', {}, [b.brewery]),
+                el('td', {}, [el('span', { class: 'beer-register__style-badge', dataset: { style: b.style } }, [beerStyleLabels[b.style] || b.style])]),
+                el('td', { class: 'beer-register__num' }, [`${b.abv.toFixed(1)} %`]),
+                el('td', { class: 'beer-register__num' }, [String(b.ibu)]),
+                el('td', { class: 'beer-register__num' }, [b.rating.toFixed(1)]),
+                el('td', {}, [formatDate(b.date_tried)])
+              ]);
+              rowsEl.appendChild(tr);
+            });
+          }
+
+          $$('[data-sort]', beerTable).forEach((btn) => {
+            const isActive = btn.dataset.sort === sortKey;
+            btn.setAttribute('aria-sort', isActive ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none');
+            btn.dataset.active = String(isActive);
+          });
+        };
+
+        render();
+      }
+
       // ─── Misc ─────────────────────────────────────────────────────────
       $('[data-year]').textContent = new Date().getFullYear();
 

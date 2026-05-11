@@ -1956,3 +1956,167 @@
         gap: 20px;
       }
     }
+
+/* ─── Beer register table ────────────────────────────────────────── */
+.beer-register {
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.06);
+}
+
+.beer-register__controls {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.beer-register__search input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 10px;
+  font: inherit;
+  background: #fff;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.beer-register__search input:focus-visible {
+  outline: none;
+  border-color: var(--c-brand, #b45309);
+  box-shadow: 0 0 0 3px rgba(180, 83, 9, 0.18);
+}
+
+.beer-register__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.beer-register__chip {
+  padding: 5px 12px;
+  font-size: 13px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: inherit;
+  color: inherit;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.beer-register__chip:hover,
+.beer-register__chip:focus-visible {
+  border-color: var(--c-brand, #b45309);
+  outline: none;
+}
+
+.beer-register__chip[aria-pressed="true"] {
+  background: var(--c-brand, #b45309);
+  color: #fff;
+  border-color: var(--c-brand, #b45309);
+}
+
+.beer-register__table-wrap {
+  overflow-x: auto;
+}
+
+.beer-register__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  min-width: 720px;
+}
+
+.beer-register__table th,
+.beer-register__table td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  vertical-align: middle;
+}
+
+.beer-register__num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.beer-register__sort {
+  background: transparent;
+  border: 0;
+  font: inherit;
+  font-weight: 600;
+  color: inherit;
+  cursor: pointer;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.beer-register__sort:hover,
+.beer-register__sort:focus-visible {
+  color: var(--c-brand, #b45309);
+  outline: none;
+}
+
+.beer-register__sort[data-active="true"]::after {
+  content: '↕';
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+.beer-register__sort[aria-sort="ascending"]::after { content: '▲'; }
+.beer-register__sort[aria-sort="descending"]::after { content: '▼'; }
+
+.beer-register__name {
+  font-weight: 600;
+}
+
+.beer-register__style-badge {
+  display: inline-block;
+  padding: 2px 9px;
+  font-size: 12px;
+  border-radius: 999px;
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.beer-register__style-badge[data-style="ipa"]    { background: #ffedd5; color: #9a3412; }
+.beer-register__style-badge[data-style="stout"]  { background: #1f2937; color: #fde68a; }
+.beer-register__style-badge[data-style="lager"]  { background: #fef9c3; color: #854d0e; }
+.beer-register__style-badge[data-style="sour"]   { background: #fce7f3; color: #9d174d; }
+.beer-register__style-badge[data-style="apa"]    { background: #fee2e2; color: #991b1b; }
+.beer-register__style-badge[data-style="pale"]   { background: #ecfccb; color: #3f6212; }
+.beer-register__style-badge[data-style="wheat"]  { background: #fff7ed; color: #9a3412; }
+.beer-register__style-badge[data-style="belgian"] { background: #ede9fe; color: #5b21b6; }
+
+.beer-register__empty {
+  text-align: center;
+  padding: 24px 0;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.beer-register__clear {
+  background: transparent;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  padding: 4px 12px;
+  margin-left: 8px;
+  cursor: pointer;
+  font: inherit;
+  color: var(--c-brand, #b45309);
+}
+
+@media (min-width: 720px) {
+  .beer-register__controls {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .beer-register__search {
+    flex: 1 1 auto;
+  }
+}

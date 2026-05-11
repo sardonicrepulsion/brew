@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-05-11
+
+### Added (#00511 — sortable + filterable beer register)
+- New `<section>` "Pivný register" below the menu — a sortable + filterable HTML table of beers recently poured. 12 sample rows seeded inline in `js/app.js` (`beerRegister` array) with fields: name, brewery, style (lager/IPA/APA/sour/stout/pale/wheat/belgian), ABV %, IBU, rating /10, date_tried.
+- Per-header sort buttons (`data-sort="name|brewery|style|abv|ibu|rating|date_tried"`) — click toggles asc/desc/none, `aria-sort` reflects the active column, numeric columns default to descending on first click.
+- Style filter chips above the table (multi-select, `aria-pressed`). Search box matches name + brewery (case-insensitive, locale-aware sort via `localeCompare('sk')`).
+- "Clear filter" CTA inside the empty state — visible only when current filters produce zero rows.
+- `css/app.css` adds the `.beer-register*` surface (chip pills, sort buttons, style badges, responsive table with horizontal scroll under 720 px).
+- `tests/brew.test.js` gains a `describe("beer register (task #511)")` block pinning the HTML hooks, the JS dataset shape, the wiring of search/chips/sort/clear, and the CSS classes.
+
+### Why
+The site already names craft beer as a core pillar, but visitors had no way to see the rotating tap history at a glance. The register doubles as a small SEO surface (more relevant on-page text) and gives the bar a "what's good lately" answer that survives between menu updates.
+
+### Version
+- `package.json`, `version.json`, `VERSION`, `Caddyfile` health/version literals, and `Dockerfile` `LABEL version` bumped to 0.8.0 in lock-step.
+
 ## [0.7.0] - 2026-05-09
 
 ### Added
