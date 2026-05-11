@@ -348,6 +348,54 @@
       </div>
     </section>
 
+    <section class="section section--tight" aria-labelledby="beer-register-title">
+      <div class="container">
+        <div class="section-heading reveal">
+          <div>
+            <p class="eyebrow">Pivný register</p>
+            <h2 id="beer-register-title">Pivá, ktoré sme nedávno čapovali.</h2>
+          </div>
+          <p>
+            Triedi podľa štýlu, ABV, IBU alebo nášho hodnotenia. Hľadaj v názve alebo pivovare.
+          </p>
+        </div>
+
+        <div class="beer-register reveal">
+          <div class="beer-register__controls">
+            <label class="beer-register__search">
+              <span class="sr-only">Hľadať pivo</span>
+              <input
+                type="search"
+                data-beer-search
+                placeholder="Hľadať podľa názvu alebo pivovaru…"
+                aria-label="Hľadať v pivnom registri"
+              />
+            </label>
+            <div class="beer-register__chips" role="group" aria-label="Filter podľa štýlu" data-beer-chips></div>
+          </div>
+
+          <div class="beer-register__table-wrap">
+            <table class="beer-register__table" data-beer-table>
+              <caption class="sr-only">Pivá v registri — triediteľná tabuľka</caption>
+              <thead>
+                <tr>
+                  <th scope="col"><button type="button" class="beer-register__sort" data-sort="name">Pivo</button></th>
+                  <th scope="col"><button type="button" class="beer-register__sort" data-sort="brewery">Pivovar</button></th>
+                  <th scope="col"><button type="button" class="beer-register__sort" data-sort="style">Štýl</button></th>
+                  <th scope="col" class="beer-register__num"><button type="button" class="beer-register__sort" data-sort="abv">ABV</button></th>
+                  <th scope="col" class="beer-register__num"><button type="button" class="beer-register__sort" data-sort="ibu">IBU</button></th>
+                  <th scope="col" class="beer-register__num"><button type="button" class="beer-register__sort" data-sort="rating">Hodnotenie</button></th>
+                  <th scope="col"><button type="button" class="beer-register__sort" data-sort="date_tried">Čapované</button></th>
+                </tr>
+              </thead>
+              <tbody data-beer-rows></tbody>
+            </table>
+            <p class="beer-register__empty" data-beer-empty hidden>Žiadne pivá nezodpovedajú filtru. <button type="button" class="beer-register__clear" data-beer-clear>Vyčistiť filter</button></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="section section--tight" aria-labelledby="pricing-title">
       <div class="container">
         <div class="section-heading reveal">
