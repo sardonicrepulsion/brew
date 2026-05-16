@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.8.2] - 2026-05-16 — `ci(srcore#789)` — Migrate CI runners to org-pool
+
+### Changed
+- `.github/workflows/ci.yml` + `version-consistency.yml`: replace `[self-hosted, linux, ARM64]` with `[self-hosted, Linux, ARM64, org-pool]` so scheduling de-pins from a single host across the 21-runner shared fleet.
+
+### Version
+- `package.json`, `version.json`, `VERSION`, Caddyfile `/version` 0.8.1 → 0.8.2.
+
 ## [0.8.1] - 2026-05-15 — `refactor(srcore#760)` — Drop version literal from /health
 
 ### Changed
