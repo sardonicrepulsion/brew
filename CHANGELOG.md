@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.8.6] - 2026-05-21 — `chore(srcore#872)` — Inline Playwright Chromium resolution in LH workflow
+
+### Fixed
+
+- `.github/workflows/lighthouse.yml`: replaced `uses: sardonicrepulsion/devops/.github/actions/resolve-playwright-chromium@main` (private cross-repo composite action ref — fails with "Unable to resolve action" at setup) with an inline `run:` step that resolves `/opt/playwright-browsers/chromium-*/chrome-linux/chrome` directly and exports `CHROME_PATH`. Unblocks LHCI runs across the V2 fleet.
+
 ## [0.8.5] - 2026-05-21 — `chore(srcore#867)` — Add Lighthouse CI score gates
 
 ### Added
