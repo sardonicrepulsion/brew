@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.8.2] - 2026-05-21 — `chore(srcore#823)` — Bump GHA actions to Node 24-compatible versions
+
+### Changed
+- `actions/checkout@v4` → `@v6` (Node 24 runtime; @v4 deprecated Sep 2026).
+- Also re-syncs `package-lock.json` (was 0.7.0) to source-of-truth.
+
+GitHub forces Node 24 default on 2026-06-16; Node 20 removed 2026-09-16. Canary repo for fleet sweep (#823).
+
 ## [0.8.1] - 2026-05-15 — `refactor(srcore#760)` — Drop version literal from /health
 
 ### Changed
