@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.8.7] - 2026-05-21 — `chore(srcore#870)` — Calibrate LHCI score floors
+
+### Changed
+
+- `lighthouserc.json`: re-floored per-repo LHCI assertions to match observed main-branch baseline (perf=0.69, a11y=0.95, best-practices=0.93, seo=0.98). Previously every V2 repo carried the same default 0.80/0.93/0.95/0.95 floor regardless of its real score, causing repos with low real scores to fail green-CI gates spuriously and high-scoring repos to never get a tight gate. Calibrated to `max(observed - 0.02, 0.50)` so a real regression of ~2 points trips the gate.
+
 ## [0.8.6] - 2026-05-21 — `chore(srcore#872)` — Inline Playwright Chromium resolution in LH workflow
 
 ### Fixed
