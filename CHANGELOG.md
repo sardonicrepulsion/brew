@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.8.4] - 2026-05-21 — `chore(srcore#866)` — Canonicalise Caddyfile indent (tabs per `caddy fmt`)
+
+### Changed
+
+- `Caddyfile` reformatted with `caddy fmt --overwrite` (4-space → tab indent). No semantic change. Part of fleet-wide #866 sweep.
+
 ## [0.8.3] - 2026-05-21 — `chore(srcore#853)` — Long-cache static assets (Cache-Control max-age=30d)
 
 ### Added
