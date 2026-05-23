@@ -474,7 +474,7 @@ document.documentElement.classList.add('js');
         lager: 'Ležiak', ipa: 'IPA', apa: 'APA', sour: 'Sour',
         stout: 'Stout', pale: 'Pale ale', wheat: 'Pšeničné', belgian: 'Belgické'
       };
-      const formatDate = (iso) => {
+      const formatBeerDate = (iso) => {
         const [y, m, d] = iso.split('-');
         return `${Number(d)}. ${Number(m)}. ${y}`;
       };
@@ -564,7 +564,7 @@ document.documentElement.classList.add('js');
                 el('td', { class: 'beer-register__num' }, [`${b.abv.toFixed(1)} %`]),
                 el('td', { class: 'beer-register__num' }, [String(b.ibu)]),
                 el('td', { class: 'beer-register__num' }, [b.rating.toFixed(1)]),
-                el('td', {}, [formatDate(b.date_tried)])
+                el('td', {}, [formatBeerDate(b.date_tried)])
               ]);
               rowsEl.appendChild(tr);
             });
