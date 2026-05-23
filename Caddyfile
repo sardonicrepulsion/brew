@@ -25,7 +25,7 @@
 	}
 	handle /version {
 		header Content-Type application/json
-		respond `{"app":"brew","version":"0.8.7","classification":"marketing/public/active"}` 200
+		respond `{"app":"brew","version":"0.8.8","classification":"marketing/public/active"}` 200
 	}
 	@manifest path *.webmanifest
 	header @manifest Content-Type "application/manifest+json; charset=utf-8"
