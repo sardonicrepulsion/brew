@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync, existsSync, statSync } from 'fs';
+import { execFileSync } from 'child_process';
 import { join } from 'path';
 
 const root = join(import.meta.dirname, '..');
@@ -45,6 +46,15 @@ describe('external CSS and JS assets (task #436)', () => {
     const jsPath = join(root, 'js', 'app.js');
     expect(existsSync(jsPath)).toBe(true);
     expect(statSync(jsPath).size).toBeGreaterThan(0);
+  });
+
+  // srcore#953 — duplicate top-level identifier inside the IIFE silently
+  // killed the whole script (mobile menu, opening-hours, reservations all
+  // dead) because the SyntaxError stops parsing before any listener attaches.
+  // Guard so a re-declaration ships with a red CI instead of a dead site.
+  it('js/app.js parses cleanly (no SyntaxError)', () => {
+    const jsPath = join(root, 'js', 'app.js');
+    expect(() => execFileSync(process.execPath, ['--check', jsPath], { stdio: 'pipe' })).not.toThrow();
   });
 
   it('index.html has no inline <style> block', () => {

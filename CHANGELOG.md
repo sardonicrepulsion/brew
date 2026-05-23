@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.8] - 2026-05-23 — `fix(srcore#953)` — Mobile menu hamburger dead (duplicate `formatDate` SyntaxError)
+
+### Fixed
+
+- `js/app.js`: renamed the second `formatDate` (line 477, beer-register row formatter, ISO → `D. M. YYYY`) to `formatBeerDate`. The first declaration at line 207 (reservation min-date helper, `Date` → ISO) and this one collided inside the IIFE, raising `SyntaxError: Identifier 'formatDate' has already been declared` at parse time. The whole script then never executed — `document.documentElement` never got the `js` class, no event listener attached, mobile hamburger click did nothing, opening-hours never rendered, reservation form never wired up. Symptom reported via Telegram (mobile screenshot, https://brew.sardonicrepulsion.com).
+- `tests/brew.test.js`: added `node --check js/app.js` static guard so any future re-declaration / parse error ships red, not silent.
+
 ## [0.8.7] - 2026-05-21 — `chore(srcore#870)` — Calibrate LHCI score floors
 
 ### Changed
