@@ -48,14 +48,7 @@ describe('external CSS and JS assets (task #436)', () => {
     expect(statSync(jsPath).size).toBeGreaterThan(0);
   });
 
-  // srcore#953 — duplicate top-level identifier inside the IIFE silently
-  // killed the whole script (mobile menu, opening-hours, reservations all
-  // dead) because the SyntaxError stops parsing before any listener attaches.
-  // Guard so a re-declaration ships with a red CI instead of a dead site.
-  it('js/app.js parses cleanly (no SyntaxError)', () => {
-    const jsPath = join(root, 'js', 'app.js');
-    expect(() => execFileSync(process.execPath, ['--check', jsPath], { stdio: 'pipe' })).not.toThrow();
-  });
+  // srcore#953 parse-guard moved to dedicated tests/parse-guard.test.js (srcore#1099).
 
   it('index.html has no inline <style> block', () => {
     const html = readFileSync(join(root, 'index.html'), 'utf8');
