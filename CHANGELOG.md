@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.8.9] - 2026-05-27 — `chore(srcore#1099)` — Dedicated parse-guard CI gate (fleet pattern)
+
+### Added
+
+- `tests/parse-guard.test.js`: standalone parse-guard test, mirrors fleet pattern from `aventera/dish/synth/fast/flyer/oscilloscope/presentation/portal`. Scans candidate shipped-JS paths (`js/app.js`, `public/js/app.js`, `public/app.js`, `script.js`, `public/script.js`) and runs `node --check` on every match. Catches the brew#953-class SyntaxError (duplicate top-level identifier inside an IIFE) before the build ships. Sweep follow-up to [[srcore_956_parse_guard_sweep]].
+
+### Removed
+
+- `tests/brew.test.js`: dropped the inline `js/app.js parses cleanly` assertion (added in 0.8.8). Same coverage now lives in the dedicated file above; the inline copy was the temporary fix.
+
 ## [0.8.8] - 2026-05-23 — `fix(srcore#953)` — Mobile menu hamburger dead (duplicate `formatDate` SyntaxError)
 
 ### Fixed
