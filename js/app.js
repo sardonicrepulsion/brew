@@ -478,6 +478,19 @@ document.documentElement.classList.add('js');
         const [y, m, d] = iso.split('-');
         return `${Number(d)}. ${Number(m)}. ${y}`;
       };
+      // srcore#1097 — tap-list freshness badge. Maps days-since-kegged to a
+      // visible chip on the date column so "what's new this week" reads at a
+      // glance without scanning dates.
+      const beerFreshness = (iso) => {
+        const today = new Date();
+        const [y, m, d] = iso.split('-').map(Number);
+        const tried = new Date(y, m - 1, d);
+        const diffDays = Math.floor((today.getTime() - tried.getTime()) / 86400000);
+        if (diffDays < 0) return null;
+        if (diffDays <= 7) return { label: 'Nové tento týždeň', kind: 'new', days: diffDays };
+        if (diffDays <= 30) return { label: 'Tento mesiac', kind: 'month', days: diffDays };
+        return null;
+      };
 
       const beerTable = $('[data-beer-table]');
       if (beerTable) {
@@ -564,7 +577,17 @@ document.documentElement.classList.add('js');
                 el('td', { class: 'beer-register__num' }, [`${b.abv.toFixed(1)} %`]),
                 el('td', { class: 'beer-register__num' }, [String(b.ibu)]),
                 el('td', { class: 'beer-register__num' }, [b.rating.toFixed(1)]),
-                el('td', {}, [formatBeerDate(b.date_tried)])
+                el('td', {}, (() => {
+                  const dateText = formatBeerDate(b.date_tried);
+                  const fresh = beerFreshness(b.date_tried);
+                  if (!fresh) return [dateText];
+                  const badge = el('span', {
+                    class: `beer-register__fresh-badge beer-register__fresh-badge--${fresh.kind}`,
+                    title: `Čapované pred ${fresh.days} ${fresh.days === 1 ? 'dňom' : (fresh.days < 5 ? 'dňami' : 'dňami')}`
+                  }, [fresh.label]);
+                  const dateSpan = el('span', { class: 'beer-register__date-text' }, [dateText]);
+                  return [dateSpan, badge];
+                })())
               ]);
               rowsEl.appendChild(tr);
             });

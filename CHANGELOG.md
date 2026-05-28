@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.8.10] - 2026-05-28 — `feat(srcore#1097)` — Tap-list freshness badge
+
+### Added
+
+- `js/app.js`: `beerFreshness(iso)` helper maps days-since-kegged to a badge — "Nové tento týždeň" (≤7 d, green) or "Tento mesiac" (≤30 d, indigo). Older entries show date only. Rendered inline in the `Čapované` column of the beer register.
+- `css/app.css`: pill-style `.beer-register__fresh-badge` with `--new`/`--month` variants. Subtle pulse animation on the "new" badge (respects `prefers-reduced-motion`).
+
+### Notes
+
+- No data-model change — badge derives from existing `date_tried` field.
+- Visible without filtering: the operator can see "what's fresh this week" at a glance instead of scanning dates.
+
 ## [0.8.9] - 2026-05-27 — `chore(srcore#1099)` — Dedicated parse-guard CI gate (fleet pattern)
 
 ### Added
