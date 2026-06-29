@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.8.11] - 2026-06-29 — `chore(deps)(srcore#1206)` — Security dependency refresh
+
+### Changed
+- `vitest` 4.1.5 -> 4.1.9
+
 ## [0.8.10] - 2026-05-28 — `feat(srcore#1097)` — Tap-list freshness badge
 
 ### Added
